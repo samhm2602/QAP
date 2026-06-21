@@ -194,10 +194,10 @@ def mejora_swap(mflujo, mdist, asignacion):
     mejor_costo = funcionobjetivo(mflujo, mdist, mejor_asignacion)
 
     n = len(mejor_asignacion)
-    mejora = True
 
-    while mejora:
-        mejora = False
+    while True:
+        mejor_vecino = mejor_asignacion.copy()
+        mejor_vecino_costo = mejor_costo
 
         for i in range(n):
             for j in range(i + 1, n):
@@ -214,10 +214,15 @@ def mejora_swap(mflujo, mdist, asignacion):
                     nueva_asignacion
                 )
 
-                if nuevo_costo < mejor_costo:
-                    mejor_costo = nuevo_costo
-                    mejor_asignacion = nueva_asignacion
-                    mejora = True
+                if nuevo_costo < mejor_vecino_costo:
+                    mejor_vecino_costo = nuevo_costo
+                    mejor_vecino = nueva_asignacion
+
+        if mejor_vecino_costo < mejor_costo:
+            mejor_costo = mejor_vecino_costo
+            mejor_asignacion = mejor_vecino
+        else:
+            break
 
     return mejor_asignacion, mejor_costo
 def graficar_asignaciones(asignacion_inicial, asignacion_final):
